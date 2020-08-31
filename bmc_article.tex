@@ -314,100 +314,10 @@ The details of each dataset are provided in Table \ref{tbl:dataset_description},
 
 
 
-\begin{table}[h!]
-\caption{Datasets' information}
-\label{tbl:dataset_description}
-% \begin{tabular}{ | l | l | l | l | l | }
-\begin{tabular}{|l|p{5cm}|p{4cm}|l|}
-	\hline
-	\textbf{Name} & \textbf{Cell/ Developmental stage} & \textbf{Experimental Method} & \textbf{Reference} &
-	\hline
-	
-% 	cattle\_MDBK & 
-    ca1 &
-	Madin-Darby bovine kidney (MDBK) & 
-	CLEAR-CLIP                        
-	& \cite{scheel2017global} & 
-	\hline
-	
-% 	celegans\_L3 & 
-    ce1 &
-	L3 staged & 
-	Modified iPAR-CLIP & 
-	\cite{grosswendt2014unambiguous} & 
-	\hline
-
-% 	celegans\_L4 & 
-    ce2 &
-	Mid-L4 WT (N2)  & 
-	ALG-1 iCLIP endogenous ligation & 
-	\cite{broughton2016pairing} &
-	\hline
-
-% 	human\_HEK293 & 
-    h1 &
-	Human embryonic kidney293 cells (HEK293) & 
-	CLASH  & 
-	\cite{helwak2013mapping} &
-	\hline
-	
-% 	human\_mix & 
-    h2 &
-	A mix of 6 datasets & 
-	AGO-CLIP endogenous ligation &  
-	\cite{grosswendt2014unambiguous} &
-	\hline
-	
-% 	human\_huh7.5 & 
-    h3 &
-	Human hepatoma cells (Huh-7.5) & 
-	CLEAR-CLIP & 
-	\cite{darnell_moore2015mirna} &
-	\hline
-	
-% 	mouse\_mix & 
-    m1 &
-	A mix of 3 datasets & 
-	AGO-CLIP endogenous ligation & 
-	\cite{grosswendt2014unambiguous} &
-	\hline
-	
-% 	mouse\_ATCC & 
-    m2 &
-	N2A mouse neuroblastoma (ATCC) & 
-	CLEAR-CLIP & 
-	\cite{darnell_moore2015mirna} &
-	\hline
-\end{tabular}
-\end{table}
-
-
-
 We applied a multi-step processing pipeline (step 1) to retrieve all the required information about the interactions (e.g., miRNA name and sequence, target site sequence, and location). Since miRNA target sites that are located at the 3’UTRs of mRNA sequences are considered to be most functional \cite{menor2014mirmark, baek2008impact}, (step 2) we filtered out non 3'UTR interactions. Then (step 3) we generated miRNA-target duplexes using RNAduplex \cite{lorenz2011viennarna}. Finally (step 4) we classified the interactions based on their seed-pairing patterns and kept only interactions with canonical or non-canonical pairing patterns (see definitions in methods). 
 
 
 The numbers of interactions that passed the pipeline stages are shown in Table \ref{tal:pipeline_summary}. The 3'UTR interactions represent 10\%-47\% of all interactions in the datasets and interactions with canonical or non-canonical seed-pairing constitute 53\%-82\% of them. The pipeline produced final datasets with variable sizes: four small datasets (500-1200), two large datasets (2000-5000), and two massive datasets ($\sim$18,000 each). These final datasets were later used as input for machine learning tasks. Therefore, we complemented the datasets with synthetically-generated negative interactions as described in methods. We extracted 490 features from each interaction, representing properties of the interaction duplex and interaction site and its flanking region within the 3'UTR (see methods: \nameref{methods_features}).
-
-
-\begin{table}[h!]
-\caption{Summary of the data processing pipeline}
-      \label{tal:pipeline_summary}
-                 \begin{threeparttable}
-                 \resizebox{\textwidth}{!}{%
-
-      \begin{tabular}{|l|l|l|l|l|l|l|l|l|}
-
-\hline
-\textbf{Dataset}                                                                                   & \textbf{ca1}     & \textbf{ce1}   & \textbf{ce2}   & \textbf{h1}     & \textbf{h2}     & \textbf{h3}     & \textbf{m1}    & \textbf{m2}      \\ \hline
-No. of interactions \tnote{a}                                                                         & 296,297 & 3,627 & 4,920 & 18,514 & 10,567 & 32,712 & 1,986 & 130,094 \\ \hline
-No. of interactions in 3'UTRs                                                                 & 30,534  & 1,704 & 1,206 & 8,507  & 2,039  & 4,634  & 902   & 33,100  \\ \hline
-\textbf{\begin{tabular}[c]{@{}l@{}}Final dataset\\ (canonical \& non-canonical\\ interactions)\end{tabular}} & \textbf{18,204} & \textbf{1,176} & \textbf{992} & \textbf{5,137} & \textbf{1,150} & \textbf{2,846} & \textbf{537} & \textbf{17,574} \\ \hline
-\end{tabular}}
-\begin{tablenotes}
-            \item[a] As provided by the original publications
-        \end{tablenotes}
-     \end{threeparttable}
-\end{table}
 
 
 
@@ -417,24 +327,6 @@ In the following subsections we characterized the interactions of each dataset b
 
 \subsubsection*{miRNA distribution}
 We counted the appearance of miRNA sequences and miRNA seed families (nt2-7) and generated a distribution function for each dataset (Table \ref{tbl:mircontribution}). Our analysis indicates that the datasets are not uniformly distributed in terms of miRNA appearances (Fig~\ref{fig:datasetplot}). Furthermore, 90\% of the interactions are dominated by a small subset of miRNA sequences (25-50\%) or miRNA seed families (18-37\%).
-
-
-
-\begin{table}[h!]
-\caption{Composition of miRNA sequences and miRNA seed families within datasets}
-\label{tbl:mircontribution}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{|l|l|l|l|l|l|l|l|l|}
-\hline
-\textbf{Dataset}          & \textbf{ca1}                                                  & \textbf{ce1}                                                  & \textbf{ce2}                                                  & \textbf{h1}                                                   & \textbf{h2}                                                   & \textbf{h3}                                                   & \textbf{m1}                                                   & \textbf{m2}                                                    \\ \hline
-\textbf{No. of interactions}   & 18,204  & 1,176 & 992   & 5,137  & 1,150  & 2,846  & 537   & 17,574                                                 \\ \hline
-\textbf{No. of miRNA sequences}      & 165                                                  & 68                                                   & 56                                                   & 287                                                  & 140                                                  & 203                                                  & 98                                                   & 417                                                   \\ \hline
-\textbf{90\% point [miRNA sequences]} & \begin{tabular}[c]{@{}l@{}}49 \\ (29\%)\end{tabular} & \begin{tabular}[c]{@{}l@{}}26 \\ (38\%)\end{tabular} & \begin{tabular}[c]{@{}l@{}}24 \\ (42\%)\end{tabular} & \begin{tabular}[c]{@{}l@{}}99 \\ (34\%)\end{tabular} & \begin{tabular}[c]{@{}l@{}}58 \\ (41\%)\end{tabular} & \begin{tabular}[c]{@{}l@{}}68 \\ (33\%)\end{tabular} & \begin{tabular}[c]{@{}l@{}}49 \\ (50\%)\end{tabular} & \begin{tabular}[c]{@{}l@{}}111 \\ (26\%)\end{tabular} \\  \hline
-\textbf{No. of seed families}      & 119                                                  & 46                                                   & 35                                                   & 254                                                  & 133                                                  & 191                                                  & 88                                                   & 343                                                   \\ \hline
-\textbf{90\% point [seed families]}  & \begin{tabular}[c]{@{}l@{}}21 \\ (18\%)\end{tabular} & \begin{tabular}[c]{@{}l@{}}14 \\ (30\%)\end{tabular} & \begin{tabular}[c]{@{}l@{}}13 \\ (37\%)\end{tabular} & \begin{tabular}[c]{@{}l@{}}62 \\ (24\%)\end{tabular} & \begin{tabular}[c]{@{}l@{}}35 \\ (26\%)\end{tabular} & \begin{tabular}[c]{@{}l@{}}42 \\ (22\%)\end{tabular} & \begin{tabular}[c]{@{}l@{}}30 \\ (34\%)\end{tabular} & \begin{tabular}[c]{@{}l@{}}63 \\ (18\%)\end{tabular}  \\ \hline
-\end{tabular}}
-\end{table}
-
 
 
 
@@ -454,25 +346,6 @@ We then trained 6 widely used classifiers on the 20 training sets of each datase
 We compared our results to previous machine learning-based approaches that were trained and tested on the human CLASH dataset designated as \textit{h1} in Table \ref{tbl:dataset_description}. The accuracy achieved by our classifiers on this dataset is comparable to the ones reported by previous studies (\nameref{add:figs_tbls}, Table S2). 
 
 
-\begin{table}[h!]
-\caption{Intra-dataset classification accuracy of different machine learning methods}
-\label{tab:self_summary}
-\begin{tabular}{|l|l|l|l|l|l|l|}
-\hline
-Dataset & XGBoost & RF & KNN & SGD & SVM & LR \\ \hline
-ca1                               & \begin{tabular}[c]{@{}l@{}}0.937 \\ (0.002)\end{tabular} & \begin{tabular}[c]{@{}l@{}}0.885 \\ (0.004)\end{tabular} & \begin{tabular}[c]{@{}l@{}}0.828 \\ (0.003)\end{tabular} & \begin{tabular}[c]{@{}l@{}}0.797 \\ (0.033)\end{tabular} & \begin{tabular}[c]{@{}l@{}}0.895 \\ (0.003)\end{tabular} & \begin{tabular}[c]{@{}l@{}}0.836 \\ (0.004)\end{tabular} \\ \hline
-ce1                               & \begin{tabular}[c]{@{}l@{}}0.889 \\ (0.014)\end{tabular} & \begin{tabular}[c]{@{}l@{}}0.833 \\ (0.019)\end{tabular} & \begin{tabular}[c]{@{}l@{}}0.768 \\ (0.019)\end{tabular} & \begin{tabular}[c]{@{}l@{}}0.798 \\ (0.045)\end{tabular} & \begin{tabular}[c]{@{}l@{}}0.841 \\ (0.015)\end{tabular} & \begin{tabular}[c]{@{}l@{}}0.843 \\ (0.014)\end{tabular} \\ \hline
-ce2                               & \begin{tabular}[c]{@{}l@{}}0.891 \\ (0.016)\end{tabular} & \begin{tabular}[c]{@{}l@{}}0.858 \\ (0.018)\end{tabular} & \begin{tabular}[c]{@{}l@{}}0.768 \\ (0.019)\end{tabular} & \begin{tabular}[c]{@{}l@{}}0.819 \\ (0.034)\end{tabular} & \begin{tabular}[c]{@{}l@{}}0.862 \\ (0.012)\end{tabular} & \begin{tabular}[c]{@{}l@{}}0.847 \\ (0.016)\end{tabular} \\ \hline
-h1                                & \begin{tabular}[c]{@{}l@{}}0.824 \\ (0.007)\end{tabular} & \begin{tabular}[c]{@{}l@{}}0.769 \\ (0.008)\end{tabular} & \begin{tabular}[c]{@{}l@{}}0.731 \\ (0.007)\end{tabular} & \begin{tabular}[c]{@{}l@{}}0.746 \\ (0.011)\end{tabular} & \begin{tabular}[c]{@{}l@{}}0.795 \\ (0.007)\end{tabular} & \begin{tabular}[c]{@{}l@{}}0.770 \\ (0.007)\end{tabular} \\ \hline
-h2                                & \begin{tabular}[c]{@{}l@{}}0.904 \\ (0.007)\end{tabular} & \begin{tabular}[c]{@{}l@{}}0.869 \\ (0.011)\end{tabular} & \begin{tabular}[c]{@{}l@{}}0.857 \\ (0.009)\end{tabular} & \begin{tabular}[c]{@{}l@{}}0.860 \\ (0.03)\end{tabular}  & \begin{tabular}[c]{@{}l@{}}0.879 \\ (0.009)\end{tabular} & \begin{tabular}[c]{@{}l@{}}0.892 \\ (0.009)\end{tabular} \\ \hline
-h3                                & \begin{tabular}[c]{@{}l@{}}0.835 \\ (0.007)\end{tabular} & \begin{tabular}[c]{@{}l@{}}0.769 \\ (0.009)\end{tabular} & \begin{tabular}[c]{@{}l@{}}0.744 \\ (0.009)\end{tabular} & \begin{tabular}[c]{@{}l@{}}0.752 \\ (0.034)\end{tabular} & \begin{tabular}[c]{@{}l@{}}0.805 \\ (0.007)\end{tabular} & \begin{tabular}[c]{@{}l@{}}0.795 \\ (0.010)\end{tabular} \\ \hline
-m1                                & \begin{tabular}[c]{@{}l@{}}0.847 \\ (0.015)\end{tabular} & \begin{tabular}[c]{@{}l@{}}0.795\\ (0.016)\end{tabular}  & \begin{tabular}[c]{@{}l@{}}0.758 \\ (0.022)\end{tabular} & \begin{tabular}[c]{@{}l@{}}0.760 \\ (0.038)\end{tabular} & \begin{tabular}[c]{@{}l@{}}0.819 \\ (0.019)\end{tabular} & \begin{tabular}[c]{@{}l@{}}0.800 \\ (0.019)\end{tabular} \\ \hline
-m2                                & \begin{tabular}[c]{@{}l@{}}0.900 \\ (0.004)\end{tabular} & \begin{tabular}[c]{@{}l@{}}0.826 \\ (0.004)\end{tabular} & \begin{tabular}[c]{@{}l@{}}0.797 \\ (0.004)\end{tabular} & \begin{tabular}[c]{@{}l@{}}0.798 \\ (0.017)\end{tabular} & \begin{tabular}[c]{@{}l@{}}0.873\\ (0.004)\end{tabular}  & \begin{tabular}[c]{@{}l@{}}0.833 \\ (0.004)\end{tabular} \\ \hline
-\end{tabular}
-\caption*{The cells contain the mean and the standard deviation (in brackets) values of the accuracy results acquired from 20 models that were trained and evaluated on different training-testing dataset splits}
-\end{table}
-
-
 
 \subsubsection*{In-depth analysis of the XGBoost performance}
 We next sought to perform an in-depth performance analysis for the XGBoost classifier since it achieved the highest accuracy across all datasets. Therefore, we calculated 5 additional commonly used performance metrics. 
@@ -483,37 +356,6 @@ The F1 score is an average of two metrics: precision (proportion of positive cla
 We observed that the values for all datasets are similar and relatively high. Table \ref{tab:measurementinfo} summarises the performance metrics of the XGBoost classifiers for each dataset. As before, we calculated the mean scores and the standard deviation values of the metrics across 20 training-testing data splits. The average metrics scores ranged as follows: AUC score ranged in 0.91-0.98, TPR and TNR ranged in 0.82-0.91, MCC coefficient ranged in 0.65-0.87, and F1 score ranged in 0.82-0.94. In accordance with the accuracy metric previously calculated, these metrics indicate that all 8 XGBoost classifiers (corresponding to each dataset) are accurate, balanced, and precise. 
 
 
-\begin{table}[h!]
-\caption{XGBoost performance measurements}
-\label{tab:measurementinfo}
-  \begin{threeparttable}
-
-\begin{tabular}{|l|l|l|l|l|l|l|}
-\hline
- Dataset   & AUC \tnote{a}     & ACC \tnote{b}           & TPR \tnote{c}          & TNR \tnote{d}          & MCC \tnote{e}          & F1 score      \\ \hline
-ca1 & \begin{tabular}[c]{@{}l@{}} 0.983 \\ (0.001)\end{tabular} & \begin{tabular}[c]{@{}l@{}} 0.937 \\ (0.002)\end{tabular} & \begin{tabular}[c]{@{}l@{}} 0.932 \\ (0.004)\end{tabular} & \begin{tabular}[c]{@{}l@{}} 0.943 \\ (0.004)\end{tabular} & \begin{tabular}[c]{@{}l@{}} 0.874 \\ (0.004)\end{tabular} & \begin{tabular}[c]{@{}l@{}} 0.937 \\ (0.002)\end{tabular} \\ \hline
-ce1 & \begin{tabular}[c]{@{}l@{}} 0.955 \\ (0.009)\end{tabular} & \begin{tabular}[c]{@{}l@{}} 0.889 \\ (0.014)\end{tabular} & \begin{tabular}[c]{@{}l@{}} 0.89 \\ (0.018)\end{tabular}  & \begin{tabular}[c]{@{}l@{}} 0.889 \\ (0.014)\end{tabular} & \begin{tabular}[c]{@{}l@{}} 0.779 \\ (0.028)\end{tabular} & \begin{tabular}[c]{@{}l@{}} 0.89 \\ (0.014)\end{tabular}  \\ \hline
-ce2 & \begin{tabular}[c]{@{}l@{}} 0.958 \\ (0.012)\end{tabular} & \begin{tabular}[c]{@{}l@{}} 0.891 \\ (0.016)\end{tabular} & \begin{tabular}[c]{@{}l@{}} 0.884 \\ (0.02)\end{tabular}  & \begin{tabular}[c]{@{}l@{}} 0.899 \\ (0.019)\end{tabular} & \begin{tabular}[c]{@{}l@{}} 0.783 \\ (0.032)\end{tabular} & \begin{tabular}[c]{@{}l@{}} 0.89 \\ (0.017)\end{tabular}  \\ \hline
-h1  & \begin{tabular}[c]{@{}l@{}} 0.908 \\ (0.006)\end{tabular} & \begin{tabular}[c]{@{}l@{}} 0.824 \\ (0.007)\end{tabular} & \begin{tabular}[c]{@{}l@{}} 0.816 \\ (0.008)\end{tabular} & \begin{tabular}[c]{@{}l@{}} 0.833 \\ (0.008)\end{tabular} & \begin{tabular}[c]{@{}l@{}} 0.649 \\ (0.014)\end{tabular} & \begin{tabular}[c]{@{}l@{}} 0.822 \\ (0.007)\end{tabular} \\ \hline
-h2  & \begin{tabular}[c]{@{}l@{}} 0.972 \\ (0.003)\end{tabular} & \begin{tabular}[c]{@{}l@{}} 0.904 \\ (0.007)\end{tabular} & \begin{tabular}[c]{@{}l@{}} 0.886 \\ (0.012)\end{tabular} & \begin{tabular}[c]{@{}l@{}} 0.924 \\ (0.011)\end{tabular} & \begin{tabular}[c]{@{}l@{}} 0.809 \\ (0.014)\end{tabular} & \begin{tabular}[c]{@{}l@{}} 0.902 \\ (0.007)\end{tabular} \\ \hline
-h3  & \begin{tabular}[c]{@{}l@{}} 0.914 \\ (0.004)\end{tabular} & \begin{tabular}[c]{@{}l@{}} 0.835 \\ (0.007)\end{tabular} & \begin{tabular}[c]{@{}l@{}} 0.823 \\ (0.011)\end{tabular} & \begin{tabular}[c]{@{}l@{}} 0.849 \\ (0.009)\end{tabular} & \begin{tabular}[c]{@{}l@{}} 0.671 \\ (0.014)\end{tabular} & \begin{tabular}[c]{@{}l@{}} 0.832 \\ (0.008)\end{tabular} \\ \hline
-m1  & \begin{tabular}[c]{@{}l@{}} 0.914 \\ (0.007)\end{tabular} & \begin{tabular}[c]{@{}l@{}} 0.847 \\ (0.015)\end{tabular} & \begin{tabular}[c]{@{}l@{}} 0.834 \\ (0.014)\end{tabular} & \begin{tabular}[c]{@{}l@{}} 0.862 \\ (0.024)\end{tabular} & \begin{tabular}[c]{@{}l@{}} 0.695 \\ (0.031)\end{tabular} & \begin{tabular}[c]{@{}l@{}} 0.844 \\ (0.014)\end{tabular} \\ \hline
-m2  & \begin{tabular}[c]{@{}l@{}} 0.963 \\ (0.002)\end{tabular} & \begin{tabular}[c]{@{}l@{}} 0.9 \\ (0.004)\end{tabular}   & \begin{tabular}[c]{@{}l@{}} 0.891 \\ (0.003)\end{tabular} & \begin{tabular}[c]{@{}l@{}} 0.909 \\ (0.005)\end{tabular} & \begin{tabular}[c]{@{}l@{}} 0.8 \\ (0.008)\end{tabular}   & \begin{tabular}[c]{@{}l@{}} 0.899 \\ (0.004)\end{tabular} \\ \hline
-\end{tabular}
-\begin{tablenotes}\footnotesize
-\item[a] Area Under the Receiver Operating Characteristic Curve
-\item[b] Overall accuracy
-\item[c] True Positive Rate (Sensitivity)
-\item[d] True Negative Rate (Specificity)
-\item[e] Matthews correlation coefficient
-% \item[f] also (F1 score or F-measure)
-\end{tablenotes}
-\end{threeparttable}
-\caption*{The cells contain the mean scores and the standard deviation (in brackets) values acquired from 20 models that were trained and evaluated on different training-testing dataset splits.}
-\end{table}
-
-
-
 \subsubsection*{Random split control}
 In the above analysis, the splitting of the dataset into the training and testing sets was done in a way that preserves the miRNA distribution in both sets (stratified split). To assess how this type of split affects the classifier performance, we repeated the analysis with the XGBoost classifier, but this time used a random split strategy (control split) to generate the training and the testing sets. Our results showed that there is almost no difference between the results achieved with the stratified and the control split methods. The accuracy results for the control splits are found in \nameref{add:figs_tbls}, Table S3.
 
@@ -522,45 +364,6 @@ We used 490 features to describe the interactions. We next sought to identify th
 For further analysis, we chose the gain metric, which reflects the contribution of each feature to the model. For each dataset, we sorted the features in descending order, based on their mean gain score. The plots of the feature importance curves for all datasets are shown in Fig~\ref{fig:feature_importance}.
 Fig~\ref{fig:feature_importance}a reveals that the gain score is decaying very fast. The 6 top features are significantly stronger relative to the rest (Fig~\ref{fig:feature_importance}b). We thus extracted the top 6 features from each dataset, along with their scaled gain score (see methods), into a unified list. The unified list consisted of a total of 16 features (out of the maximum length of 48), indicating that there are many shared features among the datasets. Table \ref{tab:feature_importance} shows the features ordered by their mean gain across all datasets and the top six features of each dataset are marked with a star. As can be seen in the table, there are at least 3 features common to each dataset pair. In addition, only a small number of features belong to a single dataset, indicating that the features in the unified list may well represent all 8 datasets.
 Notably, features related to the seed region (marked as bold in the table), comprise half of the features in the list. This finding emphasizes the role of the seed region in the formation of miRNA-mRNA interactions.
-
-
-
-\begin{table}[h!]
-
-\caption{Feature importance}
-\label{tab:feature_importance}
- \begin{threeparttable}
- \resizebox{\textwidth}{!}{%
-
-\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|}
-\hline
-\textbf{Feature/Dataset}                          & \textbf{ca1} & \textbf{ce1} & \textbf{ce2} & \textbf{h1} & \textbf{h2} & \textbf{h3} & \textbf{m1} & \textbf{m2} & \textbf{mean} \\ \hline
-\textbf{Number of GU bp within the seed\tnote{n}}              & 100\tnote{*}          & 87\tnote{*}           & 95\tnote{*}           & 29\tnote{*}          & 40\tnote{*}          & 100\tnote{*}         & 28          & 100\tnote{*}         & 72            \\ \hline
-\textbf{bp in the 1st nt of the seed\tnote{b}}                    & 63\tnote{*}           & 79\tnote{*}           & 34\tnote{*}           & 70\tnote{*}          & 25\tnote{*}          & 30\tnote{*}          & 27          & 85\tnote{*}          & 52            \\ \hline
-Number of GU bp within the site\tnote{n}                      & 42\tnote{*}           & 71\tnote{*}           & 32\tnote{*}           & 100\tnote{*}         & 19          & 53\tnote{*}          & 35\tnote{*}          & 28\tnote{*}          & 48            \\ \hline
-Proportion of G in mRNA at the site region\tnote{n}                             & 12           & 74\tnote{*}           & 12           & 12          & 36\tnote{*}          & 33\tnote{*}          & 100\tnote{*}         & 37\tnote{*}          & 39            \\ \hline
-Duplex minimum free energy\tnote{n}                               & 13\tnote{*}           & 45           & 11           & 10          & 100\tnote{*}         & 19          & 35\tnote{*}          & 52\tnote{*}          & 36            \\ \hline
-\textbf{Number of bp at location 2-7\tnote{n}} & 42\tnote{*}           & 33           & 100\tnote{*}          & 12          & 18          & 36\tnote{*}          & 13          & 18          & 34            \\ \hline
-Proportion of GG in mRNA at the site region\tnote{n}                            & 30\tnote{*}           & 21           & 10           & 12          & 7           & 30\tnote{*}          & 79\tnote{*}          & 26\tnote{*}          & 27            \\ \hline
-\textbf{bp in the 4th nt of the seed\tnote{b}}                    & 8            & 100\tnote{*}          & 21           & 10          & 11          & 16          & 2           & 12          & 22            \\ \hline
-Number of bulges outside the seed\tnote{n}                 & 3            & 60\tnote{*}           & 6            & 25\tnote{*}          & 32\tnote{*}          & 9           & 9           & 8           & 19            \\ \hline
-\textbf{bp in the 2nd nt of the seed\tnote{b}}                    & 8            & 42           & 37\tnote{*}           & 7           & 11          & 13          & 15          & 6           & 17            \\ \hline
-\textbf{bp in the 5th nt of the seed\tnote{b}}                    & 12           & 27           & 14           & 14          & 6           & 15          & 29\tnote{*}          & 12          & 16            \\ \hline
-\textbf{Number of GC bp within the seed\tnote{n}}              & 7            & 22           & 24\tnote{*}           & 18\tnote{*}          & 12          & 13          & 11          & 12          & 15            \\ \hline
-Number of GC bp outside the seed\tnote{n}                         & 4            & 27           & 11           & 10          & 27\tnote{*}          & 8           & 6           & 5           & 12            \\ \hline
-Accessibility (nt=21, len=10)\tnote{n}                                    & 9            & 19           & 7            & 6           & 25          & 7           & 12          & 7           & 11            \\ \hline
-minimum free energy of the target site + 50nt flanking regions\tnote{n}            & 8            & 11           & 6            & 7           & 8           & 11          & 36\tnote{*}          & 6           & 11            \\ \hline
-\textbf{Number of mismatches inside the seed\tnote{n}}    & 4            & 3            & 15           & 19\tnote{*}          & 0           & 13          & 2           & 9           & 8             \\ \hline
-\end{tabular}}
-\begin{tablenotes}\footnotesize
-\item[*] Belongs to the top 6 features of the dataset
-\item[b] Boolean feature
-\item[n] Numeric feature
-
-\end{tablenotes}
- \end{threeparttable}
- \caption*{The table shows 16 features representing the union of the top 6 features of each dataset, along with their gain values which were computed by XGBoost. The features are ordered by their mean gain, scaled to the range of (0, 100), across all datasets. For the unscaled version of the table, see \nameref{add:figs_tbls}, Table S5}
-\end{table}
 
 
 
@@ -642,23 +445,6 @@ The accuracy results of cross-dataset classification ranged between 0.56 to 0.94
 
 (1) Evolutionary distance - we estimated the distance for every pair of organisms (i.e., the time since the organisms diverged from their common ancestor (Table \ref{tab:evolutiontime})). Among the organisms, the mouse and the human are the closest, with cattle equally and relatively close to them, while \textit{C. elegans} is the most distant from all. Indeed, we got the highest accuracy results when we trained-tested datasets of the same organism and the lowest accuracy results when we trained-tested combinations of \textit{C.elegans} datasets with those from other organisms.
 
-
-\begin{table}[h!]
-\caption{Estimated divergence time {[}MYA{]} between organisms in our study}
-\label{tab:evolutiontime}
-\centering
-\begin{tabular}{|l|l|l|l|}
-\hline
-             & Mouse & Cattle & C.elegans \\ \hline
-Human & 90  & 96         & 797                    \\ \hline
-Mouse          &     & 96         & 797                    \\ \hline
-Cattle   &     &            & 797                    \\ \hline
-\end{tabular}
-\caption*{Each cell represents the time since the pair of organisms from the corresponding row and column diverged from their common ancestor (source: \cite{kumar2017timetree})}
-\end{table}
-
-
-
 (2) Kullback–Leibler (KL) divergence scores -  we measured the divergence for every pair of datasets based on their miRNA seed family distribution. Previous analysis of chimeric datasets showed that individual miRNAs exhibit enrichment for specific classes of base-pairing patterns \cite{helwak2013mapping, broughton2016pairing}, suggesting that they may follow different targeting rules.
 Thus, differences in the distributions of miRNA sequences in the training sets may lead to biases in the rules learned by a machine learning model, which could partially explain the high correlation that we observe between KL-divergence and the classification performance.  
 
@@ -692,25 +478,6 @@ We started the pipeline by retrieving the missing miRNA sequences by their name 
 Interactions that passed all pipeline stages were designated as positive interactions and were considered for further analysis (Table \ref{tab:preprocess}).
 
 
-\begin{table}[h!]
-\caption{Data processing pipeline}
-\label{tab:preprocess}
-\begin{tabular}{|l|c|c|c|c|c|}
-\hline
-\textbf{Paper}       & \cite{helwak2013mapping} & \cite{grosswendt2014unambiguous} & \cite{scheel2017global} & 
-\cite{broughton2016pairing} & \cite{darnell_moore2015mirna} \\ \hline
-\textbf{Datasets}  & h1 & ce1, h2, m1 & ca1                & ce2      & h3, m2  \\ \hline
-\textbf{miRNA sequence}  & \checkmark  & \checkmark           &  mirbase & mirbase  & mirbase \\ \hline
-\textbf{Target sequence} & \checkmark  & \checkmark           & \checkmark                  & wormbase & UCSC genome browser  \\ \hline
-\textbf{Site region}      & \multicolumn{5}{c|}{Ensembl Biomart + Blast}                                 \\ \hline
-\textbf{Duplex structure}     & \multicolumn{5}{c|}{Vienna RNAduplex}                                \\ \hline
-\textbf{Seed Filter} & \multicolumn{5}{c|}{Canonical and non-canonical seeds only}                \\ \hline
-\end{tabular}
-\caption*{The table describes the set of actions required to transform the datasets into a uniform format to serve as input for further data analysis and machine learning experiments. The check-mark sign (\checkmark) represents a piece of information taken directly from the paper without additional calculations.}
-\end{table}
-
-
-
 
 \subsection*{Generation of negative interactions}
 To generate the negative interactions, we used a synthetic method, similarly to the method described in \cite{menor2014mirmark, john2004human, maragkakis2009accurate}. For each positive interaction appearing in the dataset, we generated a negative interaction as follows. First, we generated a mock miRNA sequence by randomly shuffling the original sequence until there is at most one match in the regions 2-7 and 3-7 between the mock miRNA and any real miRNA of the examined organism (according to miRBase). Next, we provided the mock miRNA and the full 3'UTR sequence as inputs to RNAduplex, which is optimized for computing the hybrid structure between a small probe sequence and a long target sequence. We repeated these two steps until the output duplex had a canonical seed or non-canonical seed. 
@@ -723,23 +490,6 @@ The seed distribution calculation was done by first clustering miRNA sequences b
 
 \subsection*{Features} \label{methods_features}
 To represent miRNA-target interactions, we used 490 expert-designed features, that are classified into two categories (high-level and low-level) and five subcategories (Table \ref{tbl:feature_category}). Four of the categories (free energy, mRNA composition, miRNA pairing, and site accessibility) were adopted from \cite{wen2018deepmirtar} while the seed features group was designed in this work. For a full description of the features, see \nameref{add:feature_definition},  Table S9.
-
-
-\begin{table}[h!]
-\caption{Feature categories that are used to represent miRNA-target interactions}
-\label{tbl:feature_category}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{|l|c|ll}
-\hline
-\textbf{Category}  & \multicolumn{1}{l|}{\textbf{No. of features}} & \multicolumn{1}{l|}{\textbf{Description}}                                                                                               & \multicolumn{1}{l|}{\textbf{Group}}              \\ \hline
-Seed features      & 13                                        & \multicolumn{1}{l|}{Seed composition and properties}                                                                                    & \multicolumn{1}{l|}{High-level} \\ \hline
-Free Energy        & 7                                         & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}Free energy of the duplex and the mRNA \\ at different regions\end{tabular}}                                                                    & \multicolumn{1}{l|}{High-level} \\ \hline
-mRNA Composition   & 62                                        & \multicolumn{1}{l|}{mRNA composition in the site and flanking regions}                                                                           & \multicolumn{1}{l|}{High-level} \\ \hline
-miRNA Pairing      & 38                                        & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}Binding information at each miRNA position \\ and across the miRNA-target duplex\end{tabular}} & \multicolumn{1}{l|}{Low-level}  \\ \hline
-Site accessibility & 370                                       & \multicolumn{1}{l|}{Unpaired probabilities of each base}                                                                                                 & \multicolumn{1}{l|}{Low-level}  \\ \hline
-Total              & 490                                       &                                                                                                                                         &                                                  \\ \cline{1-2}
-\end{tabular}}
-\end{table}
 
 
 
@@ -931,6 +681,7 @@ We next evaluated the performance of XGBoost in the classification of interactio
 \clearpage
 \section*{Tables}
 
+
 \begin{table}[h!]
 \caption{Datasets' information}
 \label{tbl:dataset_description}
@@ -999,11 +750,12 @@ We next evaluated the performance of XGBoost in the classification of interactio
 \end{table}
 
 
-
 \begin{table}[h!]
 \caption{Summary of the data processing pipeline}
       \label{tal:pipeline_summary}
                  \begin{threeparttable}
+                 \resizebox{\textwidth}{!}{%
+
       \begin{tabular}{|l|l|l|l|l|l|l|l|l|}
 
 \hline
@@ -1011,7 +763,7 @@ We next evaluated the performance of XGBoost in the classification of interactio
 No. of interactions \tnote{a}                                                                         & 296,297 & 3,627 & 4,920 & 18,514 & 10,567 & 32,712 & 1,986 & 130,094 \\ \hline
 No. of interactions in 3'UTRs                                                                 & 30,534  & 1,704 & 1,206 & 8,507  & 2,039  & 4,634  & 902   & 33,100  \\ \hline
 \textbf{\begin{tabular}[c]{@{}l@{}}Final dataset\\ (canonical \& non-canonical\\ interactions)\end{tabular}} & \textbf{18,204} & \textbf{1,176} & \textbf{992} & \textbf{5,137} & \textbf{1,150} & \textbf{2,846} & \textbf{537} & \textbf{17,574} \\ \hline
-\end{tabular}
+\end{tabular}}
 \begin{tablenotes}
             \item[a] As provided by the original publications
         \end{tablenotes}
@@ -1019,9 +771,11 @@ No. of interactions in 3'UTRs                                                   
 \end{table}
 
 
+
 \begin{table}[h!]
 \caption{Composition of miRNA sequences and miRNA seed families within datasets}
 \label{tbl:mircontribution}
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{|l|l|l|l|l|l|l|l|l|}
 \hline
 \textbf{Dataset}          & \textbf{ca1}                                                  & \textbf{ce1}                                                  & \textbf{ce2}                                                  & \textbf{h1}                                                   & \textbf{h2}                                                   & \textbf{h3}                                                   & \textbf{m1}                                                   & \textbf{m2}                                                    \\ \hline
@@ -1030,7 +784,7 @@ No. of interactions in 3'UTRs                                                   
 \textbf{90\% point [miRNA sequences]} & \begin{tabular}[c]{@{}l@{}}49 \\ (29\%)\end{tabular} & \begin{tabular}[c]{@{}l@{}}26 \\ (38\%)\end{tabular} & \begin{tabular}[c]{@{}l@{}}24 \\ (42\%)\end{tabular} & \begin{tabular}[c]{@{}l@{}}99 \\ (34\%)\end{tabular} & \begin{tabular}[c]{@{}l@{}}58 \\ (41\%)\end{tabular} & \begin{tabular}[c]{@{}l@{}}68 \\ (33\%)\end{tabular} & \begin{tabular}[c]{@{}l@{}}49 \\ (50\%)\end{tabular} & \begin{tabular}[c]{@{}l@{}}111 \\ (26\%)\end{tabular} \\  \hline
 \textbf{No. of seed families}      & 119                                                  & 46                                                   & 35                                                   & 254                                                  & 133                                                  & 191                                                  & 88                                                   & 343                                                   \\ \hline
 \textbf{90\% point [seed families]}  & \begin{tabular}[c]{@{}l@{}}21 \\ (18\%)\end{tabular} & \begin{tabular}[c]{@{}l@{}}14 \\ (30\%)\end{tabular} & \begin{tabular}[c]{@{}l@{}}13 \\ (37\%)\end{tabular} & \begin{tabular}[c]{@{}l@{}}62 \\ (24\%)\end{tabular} & \begin{tabular}[c]{@{}l@{}}35 \\ (26\%)\end{tabular} & \begin{tabular}[c]{@{}l@{}}42 \\ (22\%)\end{tabular} & \begin{tabular}[c]{@{}l@{}}30 \\ (34\%)\end{tabular} & \begin{tabular}[c]{@{}l@{}}63 \\ (18\%)\end{tabular}  \\ \hline
-\end{tabular}
+\end{tabular}}
 \end{table}
 
 
@@ -1083,11 +837,13 @@ m2  & \begin{tabular}[c]{@{}l@{}} 0.963 \\ (0.002)\end{tabular} & \begin{tabular
 \end{table}
 
 
-
 \begin{table}[h!]
+
 \caption{Feature importance}
 \label{tab:feature_importance}
  \begin{threeparttable}
+ \resizebox{\textwidth}{!}{%
+
 \begin{tabular}{|l|l|l|l|l|l|l|l|l|l|}
 \hline
 \textbf{Feature/Dataset}                          & \textbf{ca1} & \textbf{ce1} & \textbf{ce2} & \textbf{h1} & \textbf{h2} & \textbf{h3} & \textbf{m1} & \textbf{m2} & \textbf{mean} \\ \hline
@@ -1107,7 +863,7 @@ Number of GC bp outside the seed\tnote{n}                         & 4           
 Accessibility (nt=21, len=10)\tnote{n}                                    & 9            & 19           & 7            & 6           & 25          & 7           & 12          & 7           & 11            \\ \hline
 minimum free energy of the target site + 50nt flanking regions\tnote{n}            & 8            & 11           & 6            & 7           & 8           & 11          & 36\tnote{*}          & 6           & 11            \\ \hline
 \textbf{Number of mismatches inside the seed\tnote{n}}    & 4            & 3            & 15           & 19\tnote{*}          & 0           & 13          & 2           & 9           & 8             \\ \hline
-\end{tabular}
+\end{tabular}}
 \begin{tablenotes}\footnotesize
 \item[*] Belongs to the top 6 features of the dataset
 \item[b] Boolean feature
@@ -1122,6 +878,7 @@ minimum free energy of the target site + 50nt flanking regions\tnote{n}         
 \begin{table}[h!]
 \caption{Estimated divergence time {[}MYA{]} between organisms in our study}
 \label{tab:evolutiontime}
+\centering
 \begin{tabular}{|l|l|l|l|}
 \hline
              & Mouse & Cattle & C.elegans \\ \hline
@@ -1151,9 +908,11 @@ Cattle   &     &            & 797                    \\ \hline
 \end{table}
 
 
+
 \begin{table}[h!]
 \caption{Feature categories that are used to represent miRNA-target interactions}
 \label{tbl:feature_category}
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{|l|c|ll}
 \hline
 \textbf{Category}  & \multicolumn{1}{l|}{\textbf{No. of features}} & \multicolumn{1}{l|}{\textbf{Description}}                                                                                               & \multicolumn{1}{l|}{\textbf{Group}}              \\ \hline
@@ -1163,8 +922,9 @@ mRNA Composition   & 62                                        & \multicolumn{1}
 miRNA Pairing      & 38                                        & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}Binding information at each miRNA position \\ and across the miRNA-target duplex\end{tabular}} & \multicolumn{1}{l|}{Low-level}  \\ \hline
 Site accessibility & 370                                       & \multicolumn{1}{l|}{Unpaired probabilities of each base}                                                                                                 & \multicolumn{1}{l|}{Low-level}  \\ \hline
 Total              & 490                                       &                                                                                                                                         &                                                  \\ \cline{1-2}
-\end{tabular}
+\end{tabular}}
 \end{table}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%                               %%
