@@ -60,7 +60,7 @@
 \usepackage{nameref}
 \usepackage{amsmath}
 \usepackage{hyperref}
-\usepackage[table,xcdraw]{xcolor}
+% \usepackage[table,xcdraw]{xcolor}
 
 % If you use beamer only pass "xcolor=table" option, i.e.
 % \documentclass[xcolor=table]{beamer}
@@ -88,8 +88,10 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
+
 \def\includegraphic{}
 \def\includegraphics{}
+
 
 
 
@@ -290,7 +292,7 @@ The availability of new datasets of high-throughput, direct miRNA-target interac
 
 Briefly, the methods chimiRic \cite{lu2016learning} and miRTarget \cite{wang2016improving,liu2019prediction} use support vector machine (SVM) for classifying miRNA-target interactions. TarPmiR \cite{ding2016tarpmir} is a random-forest (RF) based approach that provides a probability that a candidate target site is a true target site. DeepMirTar \cite{wen2018deepmirtar}, miRAW \cite{pla2018miraw}  and mirLSTM \cite{paker2019mirlstm} apply deep learning approaches that are based on stacked de-noising auto-encoder (SdA), deep artificial neural networks (ANN), and long short term memory (LSTM), respectively.  
 
-In these methods, the ML models were trained and tested on a dataset of chimeric interactions from human cells generated with the CLASH method \cite{helwak2013mapping}. In some of the studies, the dataset was filtered based on the location of the sites, seed pairing pattern, or functional evidence. In other studies, it was complemented with additional interactions from other experiments. For example, DeepMirTar \cite{wen2018deepmirtar} and mirLSTM \cite{paker2019mirlstm} included only canonical and non-canonical sites that are located at the 3’UTRs and added additional interactions retrieved from miRecords \cite{xiao2009mirecords}. 
+In these methods, the ML models were trained and tested on a dataset of chimeric interactions from human cells generated with the CLASH method \cite{helwak2013mapping}. In some of the studies, the dataset was filtered based on the location of the sites, seed pairing pattern, or functional evidence. In other studies, it was complemented with additional interactions from other experiments. For example, DeepMirTar \cite{wen2018deepmirtar} and mirLSTM \cite{paker2019mirlstm} included only canonical and non-canonical sites that are located at the 3'UTRs and added additional interactions retrieved from miRecords \cite{xiao2009mirecords}. 
 chimiRic \cite{lu2016learning} and miRAW \cite{pla2018miraw} complemented this dataset by seed-containing sites from AGO-CLIP data, while miRTarget \cite{wang2016improving} complemented it with endogenously ligated chimeras from human AGO-CLIP experiments. miRAW \cite{pla2018miraw} and miRTarget \textit{v4} \cite{liu2019prediction} intersected the CLASH dataset with other resources to retain only interactions with functional evidence.
 
 For additional independent testing, the above methods used few other datasets, which are not necessarily derived from ligation-based experiments. These datasets include human PAR-CLIP datasets, mouse HITS-CLIP dataset, chimeric interactions from iPAR-CLIP in \textit{C. elegans} and CLEAR-CLIP in mouse \cite{darnell_moore2015mirna}, and microarray-based datasets following miRNA transfections or knockdowns (\nameref{add:figs_tbls}, Table S1). 
@@ -314,7 +316,7 @@ The details of each dataset are provided in Table \ref{tbl:dataset_description},
 
 
 
-We applied a multi-step processing pipeline (step 1) to retrieve all the required information about the interactions (e.g., miRNA name and sequence, target site sequence, and location). Since miRNA target sites that are located at the 3’UTRs of mRNA sequences are considered to be most functional \cite{menor2014mirmark, baek2008impact}, (step 2) we filtered out non 3'UTR interactions. Then (step 3) we generated miRNA-target duplexes using RNAduplex \cite{lorenz2011viennarna}. Finally (step 4) we classified the interactions based on their seed-pairing patterns and kept only interactions with canonical or non-canonical pairing patterns (see definitions in methods). 
+We applied a multi-step processing pipeline (step 1) to retrieve all the required information about the interactions (e.g., miRNA name and sequence, target site sequence, and location). Since miRNA target sites that are located at the 3'UTRs of mRNA sequences are considered to be most functional \cite{menor2014mirmark, baek2008impact}, (step 2) we filtered out non 3'UTR interactions. Then (step 3) we generated miRNA-target duplexes using RNAduplex \cite{lorenz2011viennarna}. Finally (step 4) we classified the interactions based on their seed-pairing patterns and kept only interactions with canonical or non-canonical pairing patterns (see definitions in methods). 
 
 
 The numbers of interactions that passed the pipeline stages are shown in Table \ref{tal:pipeline_summary}. The 3'UTR interactions represent 10\%-47\% of all interactions in the datasets and interactions with canonical or non-canonical seed-pairing constitute 53\%-82\% of them. The pipeline produced final datasets with variable sizes: four small datasets (500-1200), two large datasets (2000-5000), and two massive datasets ($\sim$18,000 each). These final datasets were later used as input for machine learning tasks. Therefore, we complemented the datasets with synthetically-generated negative interactions as described in methods. We extracted 490 features from each interaction, representing properties of the interaction duplex and interaction site and its flanking region within the 3'UTR (see methods: \nameref{methods_features}).
@@ -326,13 +328,13 @@ The numbers of interactions that passed the pipeline stages are shown in Table \
 In the following subsections we characterized the interactions of each dataset based on their miRNA distribution and base-pairing patterns. Since the negative interactions are synthetically-generated, we focused on positive interactions only.
 
 \subsubsection*{miRNA distribution}
-We counted the appearance of miRNA sequences and miRNA seed families (nt2-7) and generated a distribution function for each dataset (Table \ref{tbl:mircontribution}). Our analysis indicates that the datasets are not uniformly distributed in terms of miRNA appearances (Fig~\ref{fig:datasetplot}). Furthermore, 90\% of the interactions are dominated by a small subset of miRNA sequences (25-50\%) or miRNA seed families (18-37\%).
+We counted the appearance of miRNA sequences and miRNA seed families (nt2-7) and generated a distribution function for each dataset (Table \ref{tbl:mircontribution}). Our analysis indicates that the datasets are not uniformly distributed in terms of miRNA appearances (Figure~\ref{fig:datasetplot}). Furthermore, 90\% of the interactions are dominated by a small subset of miRNA sequences (25-50\%) or miRNA seed families (18-37\%).
 
 
 
 
 \subsubsection*{Seed types and base-pairing density}
-We classified the interactions (i.e., the corresponding duplexes formed by the miRNA and the target site) based on two parameters: seed type (canonical or non-canonical, see methods) and base-pairing density (number of base-pairs (bp) within the duplex: low with less than 11bp, medium with 11-16bp and high with more than 16bp). We defined 6 classes based on combinations of seed type and base-pairing density and assigned each interaction to the appropriate class (Fig~\ref{fig:seed_type_pos}). As can be seen in the figure, the datasets are rich and diverse and include all the combinations of seed type and base-pairing density.
+We classified the interactions (i.e., the corresponding duplexes formed by the miRNA and the target site) based on two parameters: seed type (canonical or non-canonical, see methods) and base-pairing density (number of base-pairs (bp) within the duplex: low with less than 11bp, medium with 11-16bp and high with more than 16bp). We defined 6 classes based on combinations of seed type and base-pairing density and assigned each interaction to the appropriate class (Figure~\ref{fig:seed_type_pos}). As can be seen in the figure, the datasets are rich and diverse and include all the combinations of seed type and base-pairing density.
 Nevertheless, two observations stand out: 
 (1) In terms of seed type, the majority of the interactions are non-canonical (48-70\%); and (2) for both classes of seed types,  the majority of the interactions have medium and high base-pairing density, while the low base-pairing density interactions comprise only a small portion of the datasets. Similar analysis for the negative interactions is shown in \nameref{add:figs_tbls}, Figure S1.
 
@@ -361,8 +363,8 @@ In the above analysis, the splitting of the dataset into the training and testin
 
 \subsubsection*{Top important features of each dataset}
 We used 490 features to describe the interactions. We next sought to identify the top important features of each dataset, their relative scores, and the degree of overlap of the top features between different datasets. XGBoost classifier reports a list of five feature importance metrics: weight, gain, cover, total gain, and total cover. We extracted the 5 metrics for all the 20 training-testing splits of each dataset and calculated their mean and standard deviation (\nameref{add:feature importance}, Table S8).
-For further analysis, we chose the gain metric, which reflects the contribution of each feature to the model. For each dataset, we sorted the features in descending order, based on their mean gain score. The plots of the feature importance curves for all datasets are shown in Fig~\ref{fig:feature_importance}.
-Fig~\ref{fig:feature_importance}a reveals that the gain score is decaying very fast. The 6 top features are significantly stronger relative to the rest (Fig~\ref{fig:feature_importance}b). We thus extracted the top 6 features from each dataset, along with their scaled gain score (see methods), into a unified list. The unified list consisted of a total of 16 features (out of the maximum length of 48), indicating that there are many shared features among the datasets. Table \ref{tab:feature_importance} shows the features ordered by their mean gain across all datasets and the top six features of each dataset are marked with a star. As can be seen in the table, there are at least 3 features common to each dataset pair. In addition, only a small number of features belong to a single dataset, indicating that the features in the unified list may well represent all 8 datasets.
+For further analysis, we chose the gain metric, which reflects the contribution of each feature to the model. For each dataset, we sorted the features in descending order, based on their mean gain score. The plots of the feature importance curves for all datasets are shown in Figure~\ref{fig:feature_importance}.
+Figure~\ref{fig:feature_importance}a reveals that the gain score is decaying very fast. The 6 top features are significantly stronger relative to the rest (Figure~\ref{fig:feature_importance}b). We thus extracted the top 6 features from each dataset, along with their scaled gain score (see methods), into a unified list. The unified list consisted of a total of 16 features (out of the maximum length of 48), indicating that there are many shared features among the datasets. Table \ref{tab:feature_importance} shows the features ordered by their mean gain across all datasets and the top six features of each dataset are marked with a star. As can be seen in the table, there are at least 3 features common to each dataset pair. In addition, only a small number of features belong to a single dataset, indicating that the features in the unified list may well represent all 8 datasets.
 Notably, features related to the seed region (marked as bold in the table), comprise half of the features in the list. This finding emphasizes the role of the seed region in the formation of miRNA-mRNA interactions.
 
 
@@ -376,22 +378,22 @@ We chose the asymmetric measure Kullback–Leibler (KL) divergence which measure
 
 Similarly, we used the KL divergence to measure the pairwise information loss between every two datasets which will later be used as training and testing sets in the analysis described below. For each pair, we calculated the divergence that can be interpreted as the amount of information lost when the training set represents the testing set. The calculation is done based on the datasets' miRNA seed family distribution (see methods).
 
-Fig~\ref{fig:divergence} shows the divergence between all dataset pairs. The divergence of a dataset with itself is zero, and the divergence scores between datasets within the same organisms are usually lower than the divergence scores between different organisms. Notably, the divergence scores between \textit{C. elegans} datasets, both as targets and as sources, and the other datasets are significantly higher (range in 5-8.1) than the divergence scores between other pairs (range in 1.2-3.8), indicating that seed distributions of other organisms poorly represent the \textit{C. elegans} datasets and vice versa. The asymmetry of the KL measure can be observed, for example, for the pair \textit{(h1,h3)}, for which \textit{KL(target=h3 $||$ source=h1)=1.6} and the  \textit{KL(h1 $||$ h3)=2.1}. Intuitively, this means that dataset \textit{h1} better approximates dataset \textit{h3} and there is less information loss than in the vice-versa case.
+Figure~\ref{fig:divergence} shows the divergence between all dataset pairs. The divergence of a dataset with itself is zero, and the divergence scores between datasets within the same organisms are usually lower than the divergence scores between different organisms. Notably, the divergence scores between \textit{C. elegans} datasets, both as targets and as sources, and the other datasets are significantly higher (range in 5-8.1) than the divergence scores between other pairs (range in 1.2-3.8), indicating that seed distributions of other organisms poorly represent the \textit{C. elegans} datasets and vice versa. The asymmetry of the KL measure can be observed, for example, for the pair \textit{(h1,h3)}, for which \textit{KL(target=h3 $||$ source=h1)=1.6} and the  \textit{KL(h1 $||$ h3)=2.1}. Intuitively, this means that dataset \textit{h1} better approximates dataset \textit{h3} and there is less information loss than in the vice-versa case.
 
 
 \subsubsection*{Dataset visualization}
-Visualization is an important step in the analysis of high-throughput biological data and can assist in revealing hidden phenomena. However, visualization is challenging when the data is represented by a large number of features. The dimensionality reduction algorithm enables the representation of the data in a 2-dimension scatter plot and facilitates the inspection of the data visually. To visualize the datasets in two dimensions, we first extracted for each dataset the unified list of 16 top features found above (see Table \ref{tab:feature_importance}) and then performed a dimensional reduction using the PCA technique. The results are shown in Fig~\ref{fig:feature_pca}.
+Visualization is an important step in the analysis of high-throughput biological data and can assist in revealing hidden phenomena. However, visualization is challenging when the data is represented by a large number of features. The dimensionality reduction algorithm enables the representation of the data in a 2-dimension scatter plot and facilitates the inspection of the data visually. To visualize the datasets in two dimensions, we first extracted for each dataset the unified list of 16 top features found above (see Table \ref{tab:feature_importance}) and then performed a dimensional reduction using the PCA technique. The results are shown in Figure~\ref{fig:feature_pca}.
 
 
-Fig~\ref{fig:feature_pca} reiterates the fact that there are big differences in the sizes of the datasets, reflected in the density of the graphs. For example, the size of the human dataset \textit{h1} is more than twice the size of the datasets \textit{h2} and \textit{h3}, and indeed, its graph is denser. In addition, there are notable differences in the 2-dimensional space spanned by each dataset: while the datasets \textit{ca1}, \textit{h1}, \textit{h3}, \textit{m2} are spread in the whole area, \textit{C. elegans} datasets (\textit{ce1}, \textit{ce2}) and datasets composed of endogenously ligated chimeras from a mixture of experiments (\textit{h2}, \textit{m1}) are concentrated in a narrower part of the area.
+Figure~\ref{fig:feature_pca} reiterates the fact that there are big differences in the sizes of the datasets, reflected in the density of the graphs. For example, the size of the human dataset \textit{h1} is more than twice the size of the datasets \textit{h2} and \textit{h3}, and indeed, its graph is denser. In addition, there are notable differences in the 2-dimensional space spanned by each dataset: while the datasets \textit{ca1}, \textit{h1}, \textit{h3}, \textit{m2} are spread in the whole area, \textit{C. elegans} datasets (\textit{ce1}, \textit{ce2}) and datasets composed of endogenously ligated chimeras from a mixture of experiments (\textit{h2}, \textit{m1}) are concentrated in a narrower part of the area.
 
 \subsubsection*{Classification performance between datasets}
 We evaluated the performance of cross dataset miRNA-target predictions, i.e., the performance of a classifier when applied to interactions from datasets different from the one it was trained on.
 We examined all possible 56 combinations, considering each dataset both as a training and as a testing set. 
-For each dataset, we loaded the 20 XGBoost classifiers that we trained in section \nameref{nameref:indataset} and used them to classify the rest 7 datasets. Fig~\ref{fig:crossdataset} shows for every pair of datasets the mean classification accuracy over the 20 tests (for standard deviation values, see \nameref{add:figs_tbls}, Table S6.)
+For each dataset, we loaded the 20 XGBoost classifiers that we trained in section \nameref{nameref:indataset} and used them to classify the rest 7 datasets. Figure~\ref{fig:crossdataset} shows for every pair of datasets the mean classification accuracy over the 20 tests (for standard deviation values, see \nameref{add:figs_tbls}, Table S6.)
 
 
-Inspection of the results (excluding the diagonal) reveals that there is a variability in the classification performance among the pairs, ranging from random, slightly above 0.5, to 0.91. The accuracy matrix is not symmetric, i.e., a pair where a dataset \textit{i} serves as a training set and a dataset \textit{j} serves as a testing set, achieves a different performance than a swapped pair. Pairs of datasets originating from the same organism (surrounded by black boxes in Fig~\ref{fig:crossdataset}) generally achieved higher accuracy than pairs from mixed organisms. Intriguingly, the human pairs \textit{(h2,h1)}, \textit{(h2,h3), \textit{(h3,h1)}} achieved a relatively low accuracy score. The low performance of these pairs could be potentially explained by the differences in the diversity of the datasets. In particular, the dataset \textit{h2} is smaller and less diverse then the datasets \textit{h1,h3} (Fig~\ref{fig:feature_pca}), and thus a model that uses it as a training set achieves lower performance. In most of the cases, the KL divergence results coincide with the accuracy results. For example, for the pair \textit{(h1,h3)}, the \textit{KL(h3 $||$ h1)=1.6 $<$ KL(h3 $||$ h1)=2.1} while \textit{ACC(train=h1, test=h3)=0.79 $>$ ACC(h3,h1)=0.69}, demonstrating that the dataset \textit{h1} better represents the dataset \textit{h3} and as such achieved better accuracy results than vice versa. Interestingly, the \textit{KL(h2 $||$ h1)=2.5 $\approx$ KL(h1 $||$ h2)=2.7} however the \textit{ACC(h1,h2)=0.86 $>$ ACC(h2,h1)=0.58}. This indicates that there are additional factors that affect the ability to accurately classify miRNA-target interactions, such as the patterns of interactions that appear in them.
+Inspection of the results (excluding the diagonal) reveals that there is a variability in the classification performance among the pairs, ranging from random, slightly above 0.5, to 0.91. The accuracy matrix is not symmetric, i.e., a pair where a dataset \textit{i} serves as a training set and a dataset \textit{j} serves as a testing set, achieves a different performance than a swapped pair. Pairs of datasets originating from the same organism (surrounded by black boxes in Figure~\ref{fig:crossdataset}) generally achieved higher accuracy than pairs from mixed organisms. Intriguingly, the human pairs \textit{(h2,h1)}, \textit{(h2,h3), \textit{(h3,h1)}} achieved a relatively low accuracy score. The low performance of these pairs could be potentially explained by the differences in the diversity of the datasets. In particular, the dataset \textit{h2} is smaller and less diverse then the datasets \textit{h1,h3} (Figure~\ref{fig:feature_pca}), and thus a model that uses it as a training set achieves lower performance. In most of the cases, the KL divergence results coincide with the accuracy results. For example, for the pair \textit{(h1,h3)}, the \textit{KL(h3 $||$ h1)=1.6 $<$ KL(h3 $||$ h1)=2.1} while \textit{ACC(train=h1, test=h3)=0.79 $>$ ACC(h3,h1)=0.69}, demonstrating that the dataset \textit{h1} better represents the dataset \textit{h3} and as such achieved better accuracy results than vice versa. Interestingly, the \textit{KL(h2 $||$ h1)=2.5 $\approx$ KL(h1 $||$ h2)=2.7} however the \textit{ACC(h1,h2)=0.86 $>$ ACC(h2,h1)=0.58}. This indicates that there are additional factors that affect the ability to accurately classify miRNA-target interactions, such as the patterns of interactions that appear in them.
 
 Pairs of datasets originating from different organisms, that included \textit{C. elegans} as either a training or a testing set achieved poor performance, which ranged from 0.56 to 0.78. As we previously saw, the divergence scores of these pairs are 2x-4x larger (range from 5 to 8) than the scores of the other pairs. This may indicate that the seed distributions of human, mouse and cattle datasets are not well represented by the seed distributions of \textit{C. elegans} datasets and vice versa. Other pairs of two organisms achieve much higher accuracy, reaching up to 0.91. The lowest accuracy in these mixed pairs was observed for pairs that contained \textit{h1} as a testing set. Notably, this dataset was used by previous methods (\nameref{add:figs_tbls}, Table S1) for training/testing purposes only, and has never been evaluated as an independent testing set.   Additional factors that could influence the classification accuracy will be further discussed in the discussion section.
 
@@ -453,7 +455,7 @@ Interestingly, and maybe not surprisingly, the KL divergence results coincide wi
 (3) Area covered in 2D feature space - We visualized the datasets by their features in 2 dimensions using PCA. The visualization highlighted datasets with a lower spread. In particular, \textit{C. elegans} datasets are exceptional relative to the rest of the organisms, concentrated in a narrower area. In addition, the datasets \textit{m1} and \textit{h2}, which represent endogenously ligated chimeras from a mixture of AGO-CLIP experiments, have relatively smaller sizes compared to other datasets from the same organism and have a lower spread. The exception of these two datasets may explain the lower accuracy results obtained in cross-datasets experiments when we used them as training sets.
 
 
-\subsection*{Conclusions and future perspectives}
+\section*{Conclusions}
 The accuracy results obtained in our cross-datasets experiments are pretty high, as long as the organisms are within a certain evolutionary distance, reflecting the ability of the machine learning model to generalize interaction rules learned from a specific datastet, into more universal interaction rules. Altogether our results suggest that target prediction models could be applied also to organisms where experimental training data is limited or unavailable, as long as they are close enough to the organism that is used for training.
 As more miRNA-mRNA interaction datasets become available, they could be processed with our pipeline and incorporated into the cross-dataset analysis. Expansion of such analysis on more datasets in the future may also provide insights about the evolution of miRNA-targeting, and identification of general, as well as organism-specific features. Another interesting research direction will be to combine the information from several datasets in an iterative manner and examine the prediction accuracy in close and more distant organisms.
 
@@ -474,7 +476,7 @@ Code developed under this research was implemented as a Python package running o
 We acquired eight high-throughput chimeric miRNA-target datasets from four different organisms: human, mouse, cattle, and worm (Table \ref{tbl:dataset_description}). The datasets' files were downloaded from the journals' websites \cite{scheel2017global, grosswendt2014unambiguous, broughton2016pairing, helwak2013mapping, darnell_moore2015mirna}. In addition, we downloaded miRNA sequences from miRBase (releases 17-22) \cite{kozomara2013mirbase} and 3'UTR sequences from Ensembl Biomart database \cite{smedley2015biomart}. Genomic sequences for \textit{C.elegans} were downloaded from wormBase \cite{lee2017wormbase}, and for human and mouse from UCSC Genome Browser \cite{karolchik2004ucsc}.
 The datasets were provided in different formats, containing different levels of information about the interactions. Therefore, we developed a processing pipeline to transform the datasets into a standard format, and to include the following fields: metadata (interaction ID, interaction source), miRNA name and sequence, target site sequence (the site where the interaction occurred), and for sites located at the 3'UTRs - the corresponding 3'UTR sequence and the coordinates of the site within it.
 
-We started the pipeline by retrieving the missing miRNA sequences by their name from miRBase (for datasets  \textit{ca1, ce2, h3, m2}). Then, we extracted the target sequences (for datasets \textit{ce2, h3, m2}) based on the genomic coordinates. The target sequences are located in various mRNA regions such as 5’ untranslated region (UTR), the coding sequence (CDS), or 3’ UTR. miRNA target sites located at the 3’UTRs of mRNA sequences are considered to be most functional \cite{menor2014mirmark, baek2008impact}. Therefore, in our analyses, we discarded sites that fall outside the 3’UTRs. Since most datasets do not provide the regions containing the interactions, our next step was to obtain that information. We used Blast \cite{altschul1990basic_blast} to match the target mRNA sequences against the 3'UTRs downloaded from the Ensembl Biomart database. We considered only full match results. In cases where multiple UTRs exist per a gene, we considered the longest UTR. The full 3'UTR sequences were kept for the extraction of flanking site features, as later described. Finally, we took the list of miRNA-target pairs and examined the interaction structure. We applied the ViennaRNA suite (RNAduplex) \cite{lorenz2011viennarna} to calculate the interaction duplex, using the miRNA and the target site sequences. We then classified the duplexes based on their seed type: canonical seed, non-canonical seed, and other. Canonical seed interactions have exact Watson-Crick pairing in positions 2–7 or 3–8 of the miRNA, while non-canonical seed interactions may contain \textit{GU} base-pairs and up to one bulged or mismatched nucleotide at these positions \cite{helwak2013mapping}. We kept canonical and non-canonical seed interactions only, discarding other interactions from the analysis.
+We started the pipeline by retrieving the missing miRNA sequences by their name from miRBase (for datasets  \textit{ca1, ce2, h3, m2}). Then, we extracted the target sequences (for datasets \textit{ce2, h3, m2}) based on the genomic coordinates. The target sequences are located in various mRNA regions such as 5' untranslated region (UTR), the coding sequence (CDS), or 3'UTR. miRNA target sites located at the 3'UTRs of mRNA sequences are considered to be most functional \cite{menor2014mirmark, baek2008impact}. Therefore, in our analyses, we discarded sites that fall outside the 3'UTRs. Since most datasets do not provide the regions containing the interactions, our next step was to obtain that information. We used Blast \cite{altschul1990basic_blast} to match the target mRNA sequences against the 3'UTRs downloaded from the Ensembl Biomart database. We considered only full match results. In cases where multiple UTRs exist per a gene, we considered the longest UTR. The full 3'UTR sequences were kept for the extraction of flanking site features, as later described. Finally, we took the list of miRNA-target pairs and examined the interaction structure. We applied the ViennaRNA suite (RNAduplex) \cite{lorenz2011viennarna} to calculate the interaction duplex, using the miRNA and the target site sequences. We then classified the duplexes based on their seed type: canonical seed, non-canonical seed, and other. Canonical seed interactions have exact Watson-Crick pairing in positions 2–7 or 3–8 of the miRNA, while non-canonical seed interactions may contain \textit{GU} base-pairs and up to one bulged or mismatched nucleotide at these positions \cite{helwak2013mapping}. We kept canonical and non-canonical seed interactions only, discarding other interactions from the analysis.
 Interactions that passed all pipeline stages were designated as positive interactions and were considered for further analysis (Table \ref{tab:preprocess}).
 
 
@@ -484,7 +486,7 @@ To generate the negative interactions, we used a synthetic method, similarly to 
 We managed to generate a negative interaction for each positive interaction, thus, at the end of this process, we had balanced datasets.
 
 \subsection*{Calculation of miRNA distribution} \label{miRNAdistribution2}
-We counted the appearance of each miRNA sequence within a dataset and used that information to generate the cumulative distribution function (CDF) showed in Fig~\ref{fig:datasetplot}. We used the \textit{argmax} function to find the 90\% value, which returns the first point in the CDF which is greater than 90\%. 
+We counted the appearance of each miRNA sequence within a dataset and used that information to generate the cumulative distribution function (CDF) showed in Figure~\ref{fig:datasetplot}. We used the \textit{argmax} function to find the 90\% value, which returns the first point in the CDF which is greater than 90\%. 
 The seed distribution calculation was done by first clustering miRNA sequences based on their seed sequence (position 2-7) and then following the same steps described above.
 
 
@@ -515,7 +517,7 @@ We have chosen six machine learning methods, which are widely used in the field 
 We performed the following optimization and learning steps for every combination of (dataset, classifier, data split), all together 1200 computationally intensive tasks (Equation \ref{eq1}):
 \begin{equation} \label{eq1}
 \begin{split}
-optimization \: tasks & = #classifiers * #datasets * \left (stratified\: splits + control\: splits \right ) \\
+optimization \: tasks & = \#classifiers * \#datasets * \left (stratified\: splits + control\: splits \right ) \\
  & = 6*8*( 20 + 5 ) \\
  & = 1200
 \end{split}
@@ -557,6 +559,12 @@ We next evaluated the performance of XGBoost in the classification of interactio
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{backmatter}
+
+\section*{Ethics approval and consent to participate}
+Not applicable.
+
+\section*{Consent for publication}
+Not applicable.
 
 \section*{Competing interests}
   The authors declare that they have no competing interests.
@@ -613,61 +621,48 @@ We next evaluated the performance of XGBoost in the classification of interactio
 \clearpage
 \section*{Figures}
 
-
 \begin{figure}[h!]
   \caption{\csentence{Cumulative sum of miRNA sequence appearances in the examined datasets}}
-      \includegraphics[width = 1\textwidth]{Figures/1_mirna_dist.pdf}
+      %\includegraphics[width=\textwidth]{1_mirna_dist.pdf}
       \label{fig:datasetplot}
       \caption*{Each curve corresponds to the cumulative sum of one of the datasets, where the bold points indicate the minimum number of unique miRNA sequences needed to represent 90\% of the interactions within a dataset. The height of a curve represents the size of the dataset, and the width of a curve represents the number of unique miRNA sequences that comprise the dataset.}
       \end{figure}
 
-
-
 \begin{figure}[h!]
   \caption{\csentence{Classification of the miRNA-target duplexes based on their base-pairing patterns}} 
-    \includegraphics[width = 1\textwidth]{Figures/2_seed_type_positive2.pdf}
+    %\includegraphics[width=\textwidth]{2_seed_type_positive2.pdf}
       \label{fig:seed_type_pos}
       \caption*{Distribution of miRNA-target duplexes across 6 classes according to the seed type (canonical and non-canonical) and to the base-pairing density (low: less than 11bp, medium: 11-16bp and high: more than 16bp).}
-
       \end{figure}
-
 
 \begin{figure}[h!]
     \centering
      \caption{\csentence{Datasets' feature importance plot based on gain score}}
-    \subfloat[Full view of datasets' feature importance]{{\includegraphics[width=5cm]{Figures/3a_feature_importance_full.pdf} }}%
-    \qquad
-    \subfloat[View of the top 20 features score]{{\includegraphics[width=5cm]{Figures/3b_feature_importance_zoom.pdf} }}%
-    \caption*{The features are sorted in descending order from the top feature (highest gain) to lowest. (a) A full view of the gain plot emphasizes the gain decay.  (b) A zoomed view, focused on the top 20 features.}%
+      %\includegraphics[width=\textwidth]{3_feature_importance.pdf}
+      \caption*{The features are sorted in descending order from the top feature (highest gain) to lowest. (a) A full view of the gain plot emphasizes the gain decay.  (b) A zoomed view, focused on the top 20 features.}%
     \label{fig:feature_importance}%
 \end{figure}
 
-
 \begin{figure}[h!]
   \caption{\csentence{Kullback–Leibler (KL) divergence of all dataset pairs}}
-      \includegraphics[width = 1\textwidth]{Figures/4_divergence_reverse.pdf}
+      %\includegraphics[width=\textwidth]{4_divergence_reverse.pdf}
       \label{fig:divergence}
       \caption*{Each cell \textit{(i,j)} represents the divergence from  a source datasets \textit{i} to a target dataset \textit{j} (KL(j $||$ i)), based on their miRNA seed family distributions. The black frames surround the results of dataset pairs originating from the same organism.}
       \end{figure}
 
-
 \begin{figure}[h!]
   \caption{\csentence{Visualization of the datasets in 2D}} 
-       \includegraphics[width = 1\textwidth]{Figures/5_unite_features_pca_resample_scale=True_all.png}
+       %\includegraphics[width=\textwidth]{5_unite_features_pca_resample_scale=True_all.png}
       \label{fig:feature_pca}
       \caption*{Each point represents a single interaction after a dimensional reduction of its features' space using PCA. X and Y axes are the first and the second components of the PCA, respectively.}
       \end{figure}
 
-
-
-
 \begin{figure}[h!]
   \caption{\csentence{Cross-dataset classification results}}
-      \includegraphics[width = 1\textwidth]{Figures/6_diff_summary.pdf}
+      %\includegraphics[width=\textwidth]{6_diff_summary.pdf}
     \label{fig:crossdataset}
-    \caption*{Each cell \textit{(i,j)} represents the mean accuracy of the 20 classifiers that were trained on dataset \textit{i} (in section \nameref{sec:evaluation_different_ML}) and tested on dataset \textit{j} (ACC(i, j)). The black frames surround the results of dataset pairs originating from the same organism. The accuracy results for pairs \textit{(i,i)}, were taken from section \nameref{nameref:indataset}. Note: The color scale of this figure is inverse to the scale used for KL-divergence plot in Fig~\ref{fig:divergence}}
+    \caption*{Each cell \textit{(i,j)} represents the mean accuracy of the 20 classifiers that were trained on dataset \textit{i} (in section \nameref{sec:evaluation_different_ML}) and tested on dataset \textit{j} (ACC(i, j)). The black frames surround the results of dataset pairs originating from the same organism. The accuracy results for pairs \textit{(i,i)}, were taken from section \nameref{nameref:indataset}. Note: The color scale of this figure is inverse to the scale used for KL-divergence plot in Figure~\ref{fig:divergence}}
       \end{figure}
-
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -680,75 +675,72 @@ We next evaluated the performance of XGBoost in the classification of interactio
 % %%
 \clearpage
 \section*{Tables}
-
-
 \begin{table}[h!]
 \caption{Datasets' information}
 \label{tbl:dataset_description}
 % \begin{tabular}{ | l | l | l | l | l | }
 \begin{tabular}{|l|p{5cm}|p{4cm}|l|}
 	\hline
-	\textbf{Name} & \textbf{Cell/ Developmental stage} & \textbf{Experimental Method} & \textbf{Reference} &
+	\textbf{Name} & \textbf{Cell/ Developmental stage} & \textbf{Experimental Method} & \textbf{Reference} \\
 	\hline
 	
 % 	cattle\_MDBK & 
     ca1 &
-	Madin-Darby bovine kidney (MDBK) & 
+	Madin-Darby bovine kidney (MDBK) &
 	CLEAR-CLIP                        
-	& \cite{scheel2017global} & 
+	& \cite{scheel2017global} \\
 	\hline
 	
 % 	celegans\_L3 & 
     ce1 &
 	L3 staged & 
 	Modified iPAR-CLIP & 
-	\cite{grosswendt2014unambiguous} & 
+	\cite{grosswendt2014unambiguous}  \\
 	\hline
 
 % 	celegans\_L4 & 
     ce2 &
 	Mid-L4 WT (N2)  & 
 	ALG-1 iCLIP endogenous ligation & 
-	\cite{broughton2016pairing} &
+	\cite{broughton2016pairing} \\
 	\hline
 
 % 	human\_HEK293 & 
     h1 &
 	Human embryonic kidney293 cells (HEK293) & 
 	CLASH  & 
-	\cite{helwak2013mapping} &
+	\cite{helwak2013mapping} \\
 	\hline
 	
 % 	human\_mix & 
     h2 &
 	A mix of 6 datasets & 
 	AGO-CLIP endogenous ligation &  
-	\cite{grosswendt2014unambiguous} &
+	\cite{grosswendt2014unambiguous} \\
 	\hline
 	
 % 	human\_huh7.5 & 
     h3 &
 	Human hepatoma cells (Huh-7.5) & 
 	CLEAR-CLIP & 
-	\cite{darnell_moore2015mirna} &
+	\cite{darnell_moore2015mirna} \\
 	\hline
 	
 % 	mouse\_mix & 
     m1 &
 	A mix of 3 datasets & 
 	AGO-CLIP endogenous ligation & 
-	\cite{grosswendt2014unambiguous} &
+	\cite{grosswendt2014unambiguous} \\
 	\hline
 	
 % 	mouse\_ATCC & 
     m2 &
 	N2A mouse neuroblastoma (ATCC) & 
 	CLEAR-CLIP & 
-	\cite{darnell_moore2015mirna} &
+	\cite{darnell_moore2015mirna} \\
 	\hline
 \end{tabular}
 \end{table}
-
 
 \begin{table}[h!]
 \caption{Summary of the data processing pipeline}
@@ -770,8 +762,6 @@ No. of interactions in 3'UTRs                                                   
      \end{threeparttable}
 \end{table}
 
-
-
 \begin{table}[h!]
 \caption{Composition of miRNA sequences and miRNA seed families within datasets}
 \label{tbl:mircontribution}
@@ -786,7 +776,6 @@ No. of interactions in 3'UTRs                                                   
 \textbf{90\% point [seed families]}  & \begin{tabular}[c]{@{}l@{}}21 \\ (18\%)\end{tabular} & \begin{tabular}[c]{@{}l@{}}14 \\ (30\%)\end{tabular} & \begin{tabular}[c]{@{}l@{}}13 \\ (37\%)\end{tabular} & \begin{tabular}[c]{@{}l@{}}62 \\ (24\%)\end{tabular} & \begin{tabular}[c]{@{}l@{}}35 \\ (26\%)\end{tabular} & \begin{tabular}[c]{@{}l@{}}42 \\ (22\%)\end{tabular} & \begin{tabular}[c]{@{}l@{}}30 \\ (34\%)\end{tabular} & \begin{tabular}[c]{@{}l@{}}63 \\ (18\%)\end{tabular}  \\ \hline
 \end{tabular}}
 \end{table}
-
 
 \begin{table}[h!]
 \caption{Intra-dataset classification accuracy of different machine learning methods}
@@ -805,7 +794,6 @@ m2                                & \begin{tabular}[c]{@{}l@{}}0.900 \\ (0.004)\
 \end{tabular}
 \caption*{The cells contain the mean and the standard deviation (in brackets) values of the accuracy results acquired from 20 models that were trained and evaluated on different training-testing dataset splits}
 \end{table}
-
 
 \begin{table}[h!]
 \caption{XGBoost performance measurements}
@@ -836,14 +824,11 @@ m2  & \begin{tabular}[c]{@{}l@{}} 0.963 \\ (0.002)\end{tabular} & \begin{tabular
 \caption*{The cells contain the mean scores and the standard deviation (in brackets) values acquired from 20 models that were trained and evaluated on different training-testing dataset splits.}
 \end{table}
 
-
 \begin{table}[h!]
-
 \caption{Feature importance}
 \label{tab:feature_importance}
  \begin{threeparttable}
  \resizebox{\textwidth}{!}{%
-
 \begin{tabular}{|l|l|l|l|l|l|l|l|l|l|}
 \hline
 \textbf{Feature/Dataset}                          & \textbf{ca1} & \textbf{ce1} & \textbf{ce2} & \textbf{h1} & \textbf{h2} & \textbf{h3} & \textbf{m1} & \textbf{m2} & \textbf{mean} \\ \hline
@@ -874,7 +859,6 @@ minimum free energy of the target site + 50nt flanking regions\tnote{n}         
  \caption*{The table shows 16 features representing the union of the top 6 features of each dataset, along with their gain values which were computed by XGBoost. The features are ordered by their mean gain, scaled to the range of (0, 100), across all datasets. For the unscaled version of the table, see \nameref{add:figs_tbls}, Table S5}
 \end{table}
 
-
 \begin{table}[h!]
 \caption{Estimated divergence time {[}MYA{]} between organisms in our study}
 \label{tab:evolutiontime}
@@ -888,7 +872,6 @@ Cattle   &     &            & 797                    \\ \hline
 \end{tabular}
 \caption*{Each cell represents the time since the pair of organisms from the corresponding row and column diverged from their common ancestor (source: \cite{kumar2017timetree})}
 \end{table}
-
 
 \begin{table}[h!]
 \caption{Data processing pipeline}
@@ -906,8 +889,6 @@ Cattle   &     &            & 797                    \\ \hline
 \end{tabular}
 \caption*{The table describes the set of actions required to transform the datasets into a uniform format to serve as input for further data analysis and machine learning experiments. The check-mark sign (\checkmark) represents a piece of information taken directly from the paper without additional calculations.}
 \end{table}
-
-
 
 \begin{table}[h!]
 \caption{Feature categories that are used to represent miRNA-target interactions}
@@ -934,21 +915,35 @@ Total              & 490                                       &                
 \clearpage
 
 \section*{Additional Files}
-  \subsection*{Additional file 1} \label{add:figs_tbls}
-    Review of Machine-Learning (ML) based methods,
-    Supplemental Figure S1 to S2, 
-    Supplemental Tables S1 to S7,
-    Equations S1 to S5.
+\subsection*{Additional file 1} \label{add:figs_tbls}
+    
+\begin{itemize}
+\item Review of Machine-Learning (ML) based methods, \\
+\item     Supplemental Figure S1 to S2, \\
+\item     Supplemental Tables S1 to S7,\\
+\item     Equations S1 to S5.
+\end{itemize}
    
-  \subsection*{Additional file 2}  \label{add:feature importance}
-  Table S8. feature importance (XSLX 261KB)
+\subsection*{Additional file 2}  \label{add:feature importance}
+  
+\begin{itemize}
+\item Table S8. feature importance (XSLX 261KB)
+\end{itemize}
 
- \subsection*{Additional file 3}  \label{add:hyperoptparams}
-   grid\_search\_params.yaml (YAML 2KB)
+\subsection*{Additional file 3}  \label{add:hyperoptparams}
+\begin{itemize}
+\item    grid\_search\_params.yaml (YAML 2KB)
+\end{itemize}
 
- \subsection*{Additional file 4}  \label{add:feature_definition}
-  Table S9. Features and their definition (XSLX 15KB)
+\subsection*{Additional file 4}  \label{add:feature_definition}
+\begin{itemize}
+\item   Table S9. Features and their definition (XSLX 15KB)
+\end{itemize}
 
 
 \end{backmatter}
 \end{document}
+
+
+
+
